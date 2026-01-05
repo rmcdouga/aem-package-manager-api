@@ -48,6 +48,7 @@ jobs:
         settings-path: ${{ github.workspace }} # location for the settings.xml file
 
     - name: Install gpg secret key
+      if: (github.ref == 'refs/heads/master' || github.ref == 'refs/tags/*') &&  !matrix.experimental # Only run on main branch or tags and non-experimental
       run: |
         # Install gpg secret key
         cat <(echo -e "${{ secrets.GPG_PASSPHRASE }}") | gpg --batch --import
