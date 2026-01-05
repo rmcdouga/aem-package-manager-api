@@ -1,11 +1,11 @@
 # This workflow will build a package using Maven and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#apache-maven-with-a-settings-path
 
-name: aem-package-manager-api main automated build
+name: aem-package-manager-api branch automated build
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
     paths:
     - '**'
@@ -15,7 +15,7 @@ jobs:
   call-maven:
     uses: ./.github/workflows/aem-package-manager-api-maven.yml
     with:
-      maven-goals: deploy
+      maven-goals: verify
       maven-profiles: full
     secrets:
       GPG_PASSPHRASE: ${{ secrets.OPEN_SOURCE_AT_4POINT_GPG_PASSPHRASE }}
