@@ -37,23 +37,22 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Plugin Dependencies -->
-		<maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
-		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-		<maven-javadoc-plugin.version>3.3.1</maven-javadoc-plugin.version>
-		<central-publishing-maven-plugin.version>0.4.0</central-publishing-maven-plugin.version>
-		<jreleaser-plugin.version>1.11.0</jreleaser-plugin.version>
+		<maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
+		<maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+		<maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+		<jreleaser-plugin.version>1.22.0</jreleaser-plugin.version>
 
 		<!-- Project Dependencies -->
 		<jersey.version>3.1.5</jersey.version>
 		<jackson.version>2.16.1</jackson.version>
 
 		<!-- Testing Dependencies -->
-		<junit.version>5.10.1</junit.version>
-		<mockito.version>5.11.0</mockito.version>
-		<hamcrest.version>2.2</hamcrest.version>
-		<wiremock.version>3.4.2</wiremock.version>
-		<_4point-hamcrest-matchers.version>0.0.1-SNAPSHOT</_4point-hamcrest-matchers.version>
+		<junit.version>6.0.1</junit.version>
+		<mockito.version>5.21.0</mockito.version>
+		<hamcrest.version>3.0</hamcrest.version>
+		<wiremock.version>3.13.2</wiremock.version>
+		<_4point-hamcrest-matchers.version>0.0.4-SNAPSHOT</_4point-hamcrest-matchers.version>
 	</properties>
 
 	<distributionManagement>
@@ -149,18 +148,6 @@
 			<id>release</id>
 			<build>
 				<plugins>
-					<!--
-					<plugin>
-						<groupId>org.sonatype.central</groupId>
-						<artifactId>central-publishing-maven-plugin</artifactId>
-						<version>${central-publishing-maven-plugin.version}</version>
-						<extensions>true</extensions>
-						<configuration>
-							<publishingServerId>central</publishingServerId>
-							<tokenAuth>true</tokenAuth>
-						</configuration>
-					</plugin>
-					-->
 					<plugin>
 						<groupId>org.jreleaser</groupId>
 						<artifactId>jreleaser-maven-plugin</artifactId>
@@ -283,7 +270,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com._4point.testing</groupId>
+			<groupId>com.4point.testing</groupId>
 			<artifactId>4point-hamcrest-matchers</artifactId>
 			<version>${_4point-hamcrest-matchers.version}</version>
 		</dependency>

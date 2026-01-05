@@ -3,10 +3,10 @@ package com._4point.aem.package_manager;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import org.apache.commons.lang3.exception.UncheckedException;
 import org.junit.jupiter.api.Test;
 
 import com._4point.aem.package_manager.ListResponse.Package;
@@ -21,7 +21,7 @@ class ListResponseTest {
 		try {
 			return Files.readAllBytes(sampleXmlFile);
 		} catch (IOException e) {
-			throw new UncheckedException(e);
+			throw new UncheckedIOException(e);
 		}
 	}
 
