@@ -60,14 +60,14 @@ jobs:
         git config user.email "actions@github.com"
         git config user.name "GitHub Actions"
 
-    - name: Build only
+    - name: Build only, no profiles or deploy
+      if: (github.ref != 'refs/heads/master' && github.ref != 'refs/tags/*') ||  matrix.experimental # Only run on non-main branch and non-tags or experimental
       run: mvn 
            --batch-mode 
            --no-transfer-progress 
            ${{ inputs.maven-options }} 
            --define gpg.passphrase=${{ secrets.GPG_PASSPHRASE_PASSWORD }} 
            --settings $GITHUB_WORKSPACE/settings.xml 
-           --activate-profiles ${{ inputs.maven-profiles }}
            install
       env:
         GITHUB_TOKEN: ${{ github.token }}
