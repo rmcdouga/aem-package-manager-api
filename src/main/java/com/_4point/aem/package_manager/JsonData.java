@@ -1,19 +1,16 @@
 package com._4point.aem.package_manager;
 
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
-import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
-import com.fasterxml.jackson.core.JsonPointer;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonPointer;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.node.ObjectNode;
+
 
 /**
  * This class is used to store Json Data.
@@ -25,7 +22,7 @@ public class JsonData {
 	// ObjectMapper is expensive to create but is threadsafe, so only create it once.
 	// See: https://stackoverflow.com/questions/57670466/objectmapper-best-practice-for-thread-safety-and-performance
 	// Also see: https://stackoverflow.com/questions/3907929/should-i-declare-jacksons-objectmapper-as-a-static-field
-	private static final ObjectMapper mapper = new ObjectMapper();
+	private static final JsonMapper mapper = new JsonMapper();
 
 	private final String jsonData;
 	private final JsonNode rootNode;
@@ -48,7 +45,7 @@ public class JsonData {
 	public static JsonData from(String string) {
 		try {
 			return new JsonData(string, mapper.readTree(string));
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new JsonDataException("Error while parsing JsonData string.", e);
 		}
 	}
@@ -56,22 +53,18 @@ public class JsonData {
 	public static JsonData from(Path schemaFile, String string) {
 		try {
 			return new JsonData(string, mapper.readTree(string), schemaFile);
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new JsonDataException("Error while parsing JsonData string.", e);
 		}
 	}
 	
 	public String determineRootName() {
-		List<String> topLevelFieldNames = iteratorToStream(rootNode::fieldNames).toList();
+		Collection<String> topLevelFieldNames =  rootNode.propertyNames();
 		if (topLevelFieldNames.size() != 1) {
 			// Should only be one root object.
 			throw new IllegalStateException("Expected just one json root but found nodes %s".formatted(topLevelFieldNames.toString()));
 		}
-		return topLevelFieldNames.get(0);
-	}
-
-	private <T> Stream<T> iteratorToStream(Supplier<Iterator<T>> iterator) {
-		return StreamSupport.stream(((Iterable<T>)()->(iterator.get())).spliterator(), false);
+		return topLevelFieldNames.stream().findFirst().get();
 	}
 
 	/**
@@ -82,7 +75,7 @@ public class JsonData {
 	 */
 	public Optional<String> at(JsonDataPointer jsonDataPtr) {
 		JsonNode node = rootNode.at(jsonDataPtr.jsonPointer);
-		return node.isValueNode() ? Optional.of(node.asText()) : Optional.empty();
+		return node.isValueNode() ? Optional.of(node.asString()) : Optional.empty();
 	}
 	
 	/**
@@ -113,7 +106,7 @@ public class JsonData {
 	 */
 	public Optional<JsonData> subsetAt(JsonDataPointer jsonDataPtr) {
 		JsonNode node = rootNode.at(jsonDataPtr.jsonPointer);
-		return node.isContainerNode() ? Optional.of(JsonData.from(node.toPrettyString())) : Optional.empty();
+		return node.isContainer() ? Optional.of(JsonData.from(node.toPrettyString())) : Optional.empty();
 	}
 	
 
@@ -222,7 +215,7 @@ public class JsonData {
 		op.accept((ObjectNode)insertionNode);
 		try {
 			return JsonData.from(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(deepCopy));
-		} catch (JsonProcessingException e) {
+		} catch (JacksonException e) {
 			throw new JsonDataException("Error whiole inserting into Json.", e);
 		}
 	}
