@@ -45,7 +45,7 @@
 		<jreleaser-plugin.version>1.11.0</jreleaser-plugin.version>
 
 		<!-- Project Dependencies -->
-		<jersey.version>3.1.5</jersey.version>
+		<jersey.version>3.1.12</jersey.version>
 		<jackson.version>2.16.1</jackson.version>
 
 		<!-- Testing Dependencies -->
