@@ -46,7 +46,7 @@
 
 		<!-- Project Dependencies -->
 		<jersey.version>3.1.12</jersey.version>
-		<jackson.version>2.16.1</jackson.version>
+		<jackson.version>2.22.1</jackson.version>
 
 		<!-- Testing Dependencies -->
 		<junit.version>5.10.1</junit.version>
