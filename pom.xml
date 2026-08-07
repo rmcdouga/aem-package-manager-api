@@ -50,7 +50,7 @@
 
 		<!-- Testing Dependencies -->
 		<junit.version>5.10.1</junit.version>
-		<mockito.version>5.11.0</mockito.version>
+		<mockito.version>5.23.0</mockito.version>
 		<hamcrest.version>2.2</hamcrest.version>
 		<wiremock.version>3.4.2</wiremock.version>
 		<_4point-hamcrest-matchers.version>0.0.1-SNAPSHOT</_4point-hamcrest-matchers.version>
